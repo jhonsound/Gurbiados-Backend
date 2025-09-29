@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Backend para el proyecto Gurbiados",
   "main": "dist/app.js",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
@@ -14,6 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
