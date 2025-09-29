@@ -14,7 +14,7 @@ export const dataSourceOptions: DataSourceOptions = {
   },
 
   // 3. CAMBIAMOS SYNCHRONIZE A FALSE (POR SEGURIDAD EN PRODUCCIÓN)
-  synchronize: false,
+  synchronize: true,
 
   logging: process.env.NODE_ENV !== 'production',
 
