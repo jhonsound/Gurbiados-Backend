@@ -1,25 +1,32 @@
-import { DataSource } from 'typeorm';
-import dotenv from 'dotenv';
+import 'dotenv/config'; // Ideal para desarrollo local, no afecta en Render
+import { DataSource, DataSourceOptions } from 'typeorm';
 
-// Cargar variables de entorno
-dotenv.config();
-
-// Configuración de la conexión a la base de datos
-export const AppDataSource = new DataSource({
+export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_DATABASE || 'gurbiados',
-  synchronize: true,
-  logging: process.env.NODE_ENV !== 'production',
-  entities: ['src/models/**/*.ts'],
-  migrations: ['src/migrations/**/*.ts'],
-  subscribers: ['src/subscribers/**/*.ts'],
-});
 
-// Función para inicializar la conexión a la base de datos
+  // 1. Usamos la URL de conexión completa. Es más simple y estándar.
+  // TypeORM la leerá de la variable de entorno que configures en Render.
+  url: process.env.DATABASE_URL,
+
+  // 2. AÑADIMOS LA CONFIGURACIÓN SSL (OBLIGATORIO PARA RENDER)
+  ssl: {
+    rejectUnauthorized: false,
+  },
+
+  // 3. CAMBIAMOS SYNCHRONIZE A FALSE (POR SEGURIDAD EN PRODUCCIÓN)
+  synchronize: false,
+
+  logging: process.env.NODE_ENV !== 'production',
+
+  // 4. CORREGIMOS LAS RUTAS PARA QUE APUNTEN A LOS ARCHIVOS .JS EN 'dist'
+  entities: ['dist/models/**/*.js'],
+  migrations: ['dist/migrations/**/*.js'],
+  subscribers: ['dist/subscribers/**/*.js'],
+};
+
+// Se mantiene igual que en tu código original, ¡está perfecto!
+export const AppDataSource = new DataSource(dataSourceOptions);
+
 export const initializeDatabase = async () => {
   try {
     await AppDataSource.initialize();
