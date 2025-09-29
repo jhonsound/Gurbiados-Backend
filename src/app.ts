@@ -26,15 +26,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Rutas
-app.use('/api', indexRoutes);
+app.use('/', indexRoutes);
 
-// Ruta de inicio
+/* // Ruta de inicio
 app.get('/', (_req: Request, res: Response) => {
   res.json({
     message: 'Bienvenido a la API de Gurbiados',
     status: 'API funcionando correctamente'
   });
-});
+}); */
 
 // Inicializar la base de datos y el servidor
 const startServer = async () => {
