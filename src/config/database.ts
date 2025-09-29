@@ -19,8 +19,8 @@ export const dataSourceOptions: DataSourceOptions = {
   logging: process.env.NODE_ENV !== 'production',
 
   // 4. CORREGIMOS LAS RUTAS PARA QUE APUNTEN A LOS ARCHIVOS .JS EN 'dist'
-  entities: ['dist/models/**/*.js'],
-  migrations: ['dist/migrations/**/*.js'],
+  entities: ['src/models/**/*.ts'],
+  migrations: ['src/migrations/**/*.ts'],
   subscribers: ['dist/subscribers/**/*.js'],
 };
 

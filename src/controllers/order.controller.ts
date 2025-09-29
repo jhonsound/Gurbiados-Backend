@@ -14,7 +14,7 @@ export class OrderController {
             console.log("🚀 ~ OrderController ~ orders:", orders)
             res.status(200).json(orders);
         } catch (error) {
-            res.status(500).json({ message: 'Error al obtener las órdenes', error });
+            res.status(401).json({ message: 'Error al obtener las órdenes', error });
         }
     }
 
