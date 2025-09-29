@@ -26,14 +26,14 @@ const database_1 = require("./config/database");
 // Inicializar app
 const app = (0, express_1.default)();
 // Configuración
-const PORT = parseInt(process.env.PORT || '3000', 10);
+const PORT = parseInt(process.env.PORT || "3000", 10);
 // Middlewares
 app.use((0, cors_1.default)());
-app.use((0, morgan_1.default)('dev'));
+app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: false }));
 // Rutas
-app.use('/', index_routes_1.default);
+app.use("/", index_routes_1.default);
 /* // Ruta de inicio
 app.get('/', (_req: Request, res: Response) => {
   res.json({
@@ -52,8 +52,8 @@ const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     catch (error) {
-        console.error('Error al iniciar el servidor:', error);
+        console.error("Error al iniciar el servidor:", error);
     }
 });
 startServer();
-module.exports = app;
+exports.default = app;

@@ -8,30 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initializeDatabase = exports.AppDataSource = void 0;
+exports.initializeDatabase = exports.AppDataSource = exports.dataSourceOptions = void 0;
+require("dotenv/config"); // Ideal para desarrollo local, no afecta en Render
 const typeorm_1 = require("typeorm");
-const dotenv_1 = __importDefault(require("dotenv"));
-// Cargar variables de entorno
-dotenv_1.default.config();
-// Configuración de la conexión a la base de datos
-exports.AppDataSource = new typeorm_1.DataSource({
+exports.dataSourceOptions = {
     type: 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres',
-    database: process.env.DB_DATABASE || 'gurbiados',
-    synchronize: true,
+    // 1. Usamos la URL de conexión completa. Es más simple y estándar.
+    // TypeORM la leerá de la variable de entorno que configures en Render.
+    url: process.env.DATABASE_URL,
+    // 2. AÑADIMOS LA CONFIGURACIÓN SSL (OBLIGATORIO PARA RENDER)
+    ssl: {
+        rejectUnauthorized: false,
+    },
+    // 3. CAMBIAMOS SYNCHRONIZE A FALSE (POR SEGURIDAD EN PRODUCCIÓN)
+    synchronize: false,
     logging: process.env.NODE_ENV !== 'production',
-    entities: ['src/models/**/*.ts'],
-    migrations: ['src/migrations/**/*.ts'],
-    subscribers: ['src/subscribers/**/*.ts'],
-});
-// Función para inicializar la conexión a la base de datos
+    // 4. CORREGIMOS LAS RUTAS PARA QUE APUNTEN A LOS ARCHIVOS .JS EN 'dist'
+    entities: ['dist/models/**/*.js'],
+    migrations: ['dist/migrations/**/*.js'],
+    subscribers: ['dist/subscribers/**/*.js'],
+};
+// Se mantiene igual que en tu código original, ¡está perfecto!
+exports.AppDataSource = new typeorm_1.DataSource(exports.dataSourceOptions);
 const initializeDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield exports.AppDataSource.initialize();
